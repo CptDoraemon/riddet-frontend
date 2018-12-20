@@ -125,7 +125,7 @@ class Banner3 extends React.Component{
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.hot = () => {
             return (
-                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'hot' ? {color: this.props.themeColor[1]} : null}>
+                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'hot' ? {color: this.props.themeColor[0]} : null}>
                     <MdWhatshot />
                     <span>HOT</span>
                 </div>
@@ -133,7 +133,7 @@ class Banner3 extends React.Component{
         };
         this.new = () => {
             return (
-                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'new' ? {color: this.props.themeColor[1]} : null}>
+                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'new' ? {color: this.props.themeColor[0]} : null}>
                     <MdNewReleases />
                     <span>New</span>
                 </div>
@@ -141,7 +141,7 @@ class Banner3 extends React.Component{
         }
         this.top = () => {
             return (
-                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'top' ? {color: this.props.themeColor[1]} : null}>
+                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'top' ? {color: this.props.themeColor[0]} : null}>
                     <IoIosStats />
                     <span>TOP</span>
                 </div>
@@ -194,7 +194,7 @@ class Banner3 extends React.Component{
                             { sort }
                         </div>
                         <IoMdArrowDropdown size='20px'/>
-                        <div className='banner3-sort-dropdown-active'>
+                        <div className={this.state.sortDropdown ? 'banner3-sort-dropdown-active' : 'banner3-sort-dropdown-inactive'}>
                             <div className='banner3-sort-dropdown-item pointer' title='hot' {...handlers}>
                                 { this.hot() }
                             </div>

@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import './frontpage.css';
 
 import { IoIosBonfire } from "react-icons/io";
-import { Header } from './header'
+import { Header } from './header';
+import { Card } from './card';
+import { Info } from './info';
 
 class Frontpage extends React.Component {
     constructor (props) {
@@ -33,10 +35,22 @@ class Frontpage extends React.Component {
                 <IoIosBonfire size={size}/>
             )
         };
-        const themeTitle = 'r/saraba1st';
+        const themeTitle = 'g/saraba1st';
         return (
             <div className='frontpage-wrapper'>
                 <Header themeColor={themeColor} themeLogo={themeLogo} themeTitle={themeTitle} view={this.state.view} toggleView={this.toggleView} sort={this.state.sort} toggleSort={this.toggleSort}/>
+                <div className='main-content-wrapper'>
+                    <div className='main-content-wrapper-box'>
+                        <div className='posts-wrapper'>
+                            <Card />
+                            <Card />
+                            <Card />
+                        </div>
+                        <div className='infos-wrapper'>
+                            <Info themeColor={themeColor} themeLogo={themeLogo} themeTitle={themeTitle}/>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
