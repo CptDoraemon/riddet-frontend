@@ -3,7 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './header.css';
 
-import { IoIosAnalytics, IoIosBonfire, IoIosSearch, IoIosTrendingUp, IoIosStats, IoIosCube, IoMdPerson, IoMdArrowDropdown } from "react-icons/io";
+import { IoIosAnalytics, IoIosSearch, IoIosTrendingUp, IoIosStats, IoIosCube, IoMdPerson, IoMdArrowDropdown } from "react-icons/io";
+import { MdViewStream, MdMenu, MdReorder } from "react-icons/md";
+import { MdWhatshot, MdNewReleases } from "react-icons/md";
 
 
 function HeaderFixedLogo (props) {
@@ -18,8 +20,10 @@ function HeaderFixedLogo (props) {
 function HeaderFixedSubs (props) {
     return (
         <button className='header-fixed-subs flex-row-even pointer'>
-            <IoIosBonfire size='20px' className='header-fixed-subs-icon'/>
-            <span>r/saraba1st</span>
+            <div className='header-fixed-subs-icon'>
+                { props.themeLogo('30px') }
+            </div>
+            <span>{ props.themeTitle }</span>
         </button>
     )
 }
@@ -67,7 +71,7 @@ class HeaderFixed extends React.Component {
         return (
             <div className='header-fixed flex-row-even'>
                     <HeaderFixedLogo />
-                    <HeaderFixedSubs />
+                    <HeaderFixedSubs themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle}/>
                     <HeaderFixedSearch />
                     <HeaderFixedTools />
                     <HeaderFixedSignup />
@@ -77,28 +81,135 @@ class HeaderFixed extends React.Component {
     }
 }
 
+function HeaderFixedPlaceholder(props) {
+    return (
+        <div className='header-fixed-placeholder'>
+
+        </div>
+    )
+}
+
 function Banner1 (props) {
     return (
-        <div>
-
+        <div className='banner1 flex-row-center' style={{backgroundColor: props.themeColor[1]}}>
+            <div className='banner1-container'>
+                <div className='banner1-logo'>
+                    { props.themeLogo('30px') }
+                </div>
+                <div className='banner1-title'>
+                    <span> { props.themeTitle } </span>
+                </div>
+            </div>
         </div>
     )
 }
 
 function Banner2 (props) {
     return (
-        <div>
-
+        <div className='banner2 flex-row-center' style={{backgroundColor: props.themeColor[2]}}>
+            <div className='banner2-container'>
+                <div className='banner2-item' style={{color: props.themeColor[0], borderBottomColor: props.themeColor[0]}} >
+                    <span>Posts</span>
+                </div>
+            </div>
         </div>
     )
 }
 
-function Banner3 (props) {
-    return (
-        <div>
+class Banner3 extends React.Component{
+    constructor (props) {
+        super (props);
+        this.state = {
+            sortDropdown: false
+        };
+        this.toggleDropdown = this.toggleDropdown.bind(this);
+        this.hot = () => {
+            return (
+                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'hot' ? {color: this.props.themeColor[1]} : null}>
+                    <MdWhatshot />
+                    <span>HOT</span>
+                </div>
+            )
+        };
+        this.new = () => {
+            return (
+                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'new' ? {color: this.props.themeColor[1]} : null}>
+                    <MdNewReleases />
+                    <span>New</span>
+                </div>
+            )
+        }
+        this.top = () => {
+            return (
+                <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'top' ? {color: this.props.themeColor[1]} : null}>
+                    <IoIosStats />
+                    <span>TOP</span>
+                </div>
+            )
+        }
+    }
+    toggleDropdown() {
+        this.setState({
+            sortDropdown: this.state.sortDropdown ? false : true
+        })
+    }
+    handleSortEnter(e) {
+        e.target.style = 'background-color: ' + this.props.themeColor[2] + ';color: black;';
+    }
+    handleSortLeave(e) {
+        e.target.style = 'none';
+    }
+    render() {
+        let sort = this.props.sort === 'hot' ?
+            this.hot() : this.props.sort === 'new' ? this.new() : this.top();
+        const handlers = {
+            onMouseEnter: (e) => this.handleSortEnter(e),
+            onMouseLeave: (e) => this.handleSortLeave(e),
+            onClick: (e) => this.props.toggleSort(e)
+        }
+        return (
+            <div className='banner3 flex-row-center'>
+                <div className='banner3-container'>
+                    <div className='banner3-view flex-row-even'>
+                        <span>VIEW</span>
+                        <div className='flex-row-even' style={{color: this.props.themeColor[0]}}>
+                            <div className='banner3-view-item pointer' onClick={() => this.props.toggleView('card')}>
+                                <MdViewStream size='25px' style={{opacity: this.props.view === 'card' ? 1 : 0.3}}/>
+                                <span className='banner3-view-item-toolkit'>Card</span>
+                            </div>
+                            <div className='banner3-view-item pointer' onClick={() => this.props.toggleView('classic')}>
+                                <MdMenu size='25px' style={{opacity: this.props.view === 'classic' ? 1 : 0.3}}/>
+                                <span className='banner3-view-item-toolkit'>Classic</span>
+                            </div>
+                            <div className='banner3-view-item pointer' onClick={() => this.props.toggleView('compact')}>
+                                <MdReorder size='25px' style={{opacity: this.props.view === 'compact' ? 1 : 0.3}} />
+                                <span className='banner3-view-item-toolkit'>Compact</span>
+                            </div>
+                        </div>
+                    </div>
 
-        </div>
-    )
+                    <div className='banner3-sort flex-row-even pointer' onClick={this.toggleDropdown}>
+                        <span>SORT</span>
+                        <div>
+                            { sort }
+                        </div>
+                        <IoMdArrowDropdown size='20px'/>
+                        <div className='banner3-sort-dropdown-active'>
+                            <div className='banner3-sort-dropdown-item pointer' title='hot' {...handlers}>
+                                { this.hot() }
+                            </div>
+                            <div className='banner3-sort-dropdown-item pointer' title='new' {...handlers}>
+                                { this.new() }
+                            </div>
+                            <div className='banner3-sort-dropdown-item pointer' title='top' {...handlers}>
+                                { this.top() }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
 
@@ -106,10 +217,11 @@ class Header extends React.Component {
     render() {
         return (
             <div className='header-wrapper'>
-                <HeaderFixed />
-                <Banner1 />
-                <Banner2 />
-                <Banner3 />
+                <HeaderFixed themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle}/>
+                <HeaderFixedPlaceholder />
+                <Banner1 themeColor={this.props.themeColor} themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle}/>
+                <Banner2 themeColor={this.props.themeColor}/>
+                <Banner3 themeColor={this.props.themeColor} view={this.props.view} toggleView={this.props.toggleView} sort={this.props.sort} toggleSort={this.props.toggleSort}/>
             </div>
         )
     }
