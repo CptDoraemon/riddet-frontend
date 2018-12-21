@@ -82,7 +82,7 @@ function HeaderFixedTools (props) {
 function HeaderFixedSignup (props) {
     return (
         <div className='header-fixed-signup-login flex-row-even'>
-            <button className='header-fixed-signup pointer'>LOG IN</button>
+            <button className='header-fixed-signup pointer' onClick={() => props.openInSmallIFrame('./login')}>LOG IN</button>
             <button className='header-fixed-login pointer'>SIGN UP</button>
         </div>
     )
@@ -123,7 +123,7 @@ class HeaderFixedUser extends React.Component{
                 </button>
                 <div
                     className={this.state.dropdown ? 'header-fixed-user-dropdown-active' : 'header-fixed-user-dropdown-inactive'}>
-                    <div className='header-fixed-user-dropdown-active-item'>
+                    <div className='header-fixed-user-dropdown-active-item' onClick={() => this.props.openInSmallIFrame('./login')}>
                         <span>Log in / Sign up</span>
                     </div>
                 </div>
@@ -141,8 +141,8 @@ class HeaderFixed extends React.Component {
                     <HeaderFixedSubs themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle}/>
                     <HeaderFixedSearch themeTitle={this.props.themeTitle}/>
                     <HeaderFixedTools />
-                    <HeaderFixedSignup />
-                    <HeaderFixedUser />
+                    <HeaderFixedSignup openInSmallIFrame={this.props.openInSmallIFrame}/>
+                    <HeaderFixedUser openInSmallIFrame={this.props.openInSmallIFrame}/>
             </div>
         );
     }
@@ -231,7 +231,7 @@ class Banner3 extends React.Component{
         e.target.style = 'background-color: ' + this.props.themeColor[2] + ';color: black;';
     }
     handleSortLeave(e) {
-        e.target.style = 'none';
+        e.target.style = null;
     }
     componentDidMount() {
         window.addEventListener('click', this.closeDropdown);
@@ -245,7 +245,6 @@ class Banner3 extends React.Component{
         const handlers = {
             onMouseEnter: (e) => this.handleSortEnter(e),
             onMouseLeave: (e) => this.handleSortLeave(e),
-            onClick: (e) => this.props.toggleSort(e)
         }
         return (
             <div className='banner3 flex-row-center'>
@@ -275,13 +274,13 @@ class Banner3 extends React.Component{
                         </div>
                         <IoMdArrowDropdown size='20px'/>
                         <div className={this.state.sortDropdown ? 'banner3-sort-dropdown-active' : 'banner3-sort-dropdown-inactive'}>
-                            <div className='banner3-sort-dropdown-item pointer' title='hot' {...handlers}>
+                            <div className='banner3-sort-dropdown-item pointer' onClick={() => this.props.toggleSort('hot')} {...handlers}>
                                 { this.hot() }
                             </div>
-                            <div className='banner3-sort-dropdown-item pointer' title='new' {...handlers}>
+                            <div className='banner3-sort-dropdown-item pointer' onClick={() => this.props.toggleSort('new')} {...handlers}>
                                 { this.new() }
                             </div>
-                            <div className='banner3-sort-dropdown-item pointer' title='top' {...handlers}>
+                            <div className='banner3-sort-dropdown-item pointer' onClick={() => this.props.toggleSort('top')} {...handlers}>
                                 { this.top() }
                             </div>
                         </div>
@@ -297,7 +296,7 @@ class Header extends React.Component {
     render() {
         return (
             <div className='header-wrapper'>
-                <HeaderFixed themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle}/>
+                <HeaderFixed themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle} openInSmallIFrame={this.props.openInSmallIFrame}/>
                 <HeaderFixedPlaceholder />
                 <Banner1 themeColor={this.props.themeColor} themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle}/>
                 <Banner2 themeColor={this.props.themeColor}/>

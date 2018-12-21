@@ -1,6 +1,6 @@
 .login-wrapper {
     max-width: 1000px;
-    height: 800px;
+    height: 100vh;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -58,6 +58,7 @@
     color: grey;
     z-index: 99;
     text-transform: uppercase;
+    transition: 0.3s;
 }
 .login-item-wrapper-label-small {
     position: absolute;
@@ -70,6 +71,7 @@
     color: grey;
     z-index: 99;
     text-transform: uppercase;
+    transition: 0.3s;
 }
 
 .login-item-wrapper input {
