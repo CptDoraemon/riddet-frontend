@@ -5,6 +5,27 @@ import './info.css';
 
 
 class Info extends React.Component {
+    constructor(props) {
+        super(props);
+        this.aboutRef = React.createRef();
+        this.state = {
+            aboutRefPosition: null,
+            aboutFixed: false
+        };
+        this.toggleAboutFixed = this.toggleAboutFixed.bind(this);
+    }
+    toggleAboutFixed() {
+        window.scrollY + 50 + 10> this.state.aboutRefPosition ? this.setState({aboutFixed: true}) : this.setState({aboutFixed: false})
+    }
+    componentDidMount() {
+        this.setState({
+            aboutRefPosition: this.aboutRef.current.offsetTop
+        });
+        window.addEventListener('scroll', this.toggleAboutFixed);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.toggleAboutFixed);
+    }
     render() {
         return (
             <div>
@@ -53,7 +74,7 @@ class Info extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className='info-wrapper'>
+                <div className={this.state.aboutFixed ? 'info-wrapper info-about-fixed' : 'info-wrapper'} ref={this.aboutRef}>
                     <div className='info-about'>
                         <p>This website is a web development practice project for my personal use.</p>
                         <a href='https://www.xiaoxihome.com' target='_blank' rel='noopener noreferrer' style={{color: this.props.themeColor[0]}}>Author</a>

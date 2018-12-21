@@ -28,13 +28,45 @@ function HeaderFixedSubs (props) {
     )
 }
 
-function HeaderFixedSearch (props) {
-    return (
-        <div className='header-fixed-search flex-row-even'>
-            <IoIosSearch size='20px'/>
-            <input value='...search'/>
-        </div>
-    )
+class HeaderFixedSearch extends React.Component{
+    constructor (props) {
+        super (props);
+        this.state = {
+           value: ''
+        };
+        this.defaultValue = '... search ' + this.props.themeTitle;
+        this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
+        this.handleFocus = this.handleFocus.bind(this);
+    }
+    handleChange (e) {
+        this.setState({
+            value: e.target.value
+        })
+    }
+    handleFocus (e) {
+        this.setState({
+            value: this.state.value === this.defaultValue ? '' : e.target.value
+        })
+    }
+    handleBlur (e) {
+        this.setState({
+            value: (/^\s*$/).test(this.state.value) ? this.defaultValue : e.target.value
+        })
+    }
+    componentDidMount() {
+        this.setState({
+            value: this.defaultValue
+        })
+    }
+    render () {
+        return (
+            <div className='header-fixed-search flex-row-even'>
+                <IoIosSearch size='20px'/>
+                <input value={this.state.value} onChange={this.handleChange} onBlur={this.handleBlur} onFocus={this.handleFocus}/>
+            </div>
+        )
+    }
 }
 
 function HeaderFixedTools (props) {
@@ -56,13 +88,48 @@ function HeaderFixedSignup (props) {
     )
 }
 
-function HeaderFixedUser (props) {
-    return (
-        <button className='header-fixed-user flex-row-even pointer'>
-            <IoMdPerson size='25px'/>
-            <IoMdArrowDropdown size='25px'/>
-        </button>
-    )
+class HeaderFixedUser extends React.Component{
+    constructor (props) {
+        super (props);
+        this.state = {
+            dropdown: false
+        }
+        this.toggleDropdown = this.toggleDropdown.bind(this);
+        this.closeDropdown = this.closeDropdown.bind(this);
+    }
+    toggleDropdown (e) {
+        e.stopPropagation();
+        this.setState({
+            dropdown: !this.state.dropdown
+        })
+    }
+    closeDropdown () {
+        this.setState({
+            dropdown: false
+        })
+    }
+    componentDidMount () {
+        window.addEventListener('click', this.closeDropdown);
+    }
+    componentWillUnmount () {
+        window.removeEventListener('click', this.closeDropdown);
+    }
+    render() {
+        return (
+            <div className='header-fixed-user'>
+                <button className='header-fixed-user-button flex-row-even pointer' onClick={this.toggleDropdown}>
+                    <IoMdPerson size='25px'/>
+                    <IoMdArrowDropdown size='25px'/>
+                </button>
+                <div
+                    className={this.state.dropdown ? 'header-fixed-user-dropdown-active' : 'header-fixed-user-dropdown-inactive'}>
+                    <div className='header-fixed-user-dropdown-active-item'>
+                        <span>Log in / Sign up</span>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
 
@@ -72,7 +139,7 @@ class HeaderFixed extends React.Component {
             <div className='header-fixed flex-row-even'>
                     <HeaderFixedLogo />
                     <HeaderFixedSubs themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle}/>
-                    <HeaderFixedSearch />
+                    <HeaderFixedSearch themeTitle={this.props.themeTitle}/>
                     <HeaderFixedTools />
                     <HeaderFixedSignup />
                     <HeaderFixedUser />
@@ -123,6 +190,7 @@ class Banner3 extends React.Component{
             sortDropdown: false
         };
         this.toggleDropdown = this.toggleDropdown.bind(this);
+        this.closeDropdown = this.closeDropdown.bind(this);
         this.hot = () => {
             return (
                 <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'hot' ? {color: this.props.themeColor[0]} : null}>
@@ -138,7 +206,7 @@ class Banner3 extends React.Component{
                     <span>New</span>
                 </div>
             )
-        }
+        };
         this.top = () => {
             return (
                 <div className='banner3-sort-item flex-row-even' style={this.props.sort === 'top' ? {color: this.props.themeColor[0]} : null}>
@@ -148,9 +216,15 @@ class Banner3 extends React.Component{
             )
         }
     }
-    toggleDropdown() {
+    toggleDropdown(e) {
+        e.stopPropagation();
         this.setState({
-            sortDropdown: this.state.sortDropdown ? false : true
+            sortDropdown: !this.state.sortDropdown
+        })
+    }
+    closeDropdown () {
+        this.setState({
+            sortDropdown: false
         })
     }
     handleSortEnter(e) {
@@ -158,6 +232,12 @@ class Banner3 extends React.Component{
     }
     handleSortLeave(e) {
         e.target.style = 'none';
+    }
+    componentDidMount() {
+        window.addEventListener('click', this.closeDropdown);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('click', this.closeDropdown);
     }
     render() {
         let sort = this.props.sort === 'hot' ?

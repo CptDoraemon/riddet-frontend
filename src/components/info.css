@@ -5,6 +5,7 @@
     margin: 20px 0 20px 20px;
     border-radius: 5px;
     overflow: hidden;
+    position: relative;
 }
 .info-header {
     width: calc(100% - 20px);
@@ -112,4 +113,8 @@
     font-size: 0.8em;
     text-align: center;
     padding: 10px 0;
+}
+.info-about-fixed {
+    position: fixed;
+    top: 40px; /* wrapper has 20px margin */
 }

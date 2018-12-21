@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './frontpage.css';
 
-import { IoIosBonfire } from "react-icons/io";
 import { Header } from './header';
 import { Card } from './card';
 import { Info } from './info';
@@ -29,25 +28,24 @@ class Frontpage extends React.Component {
         })
     }
     render() {
-        const themeColor = ['rgb(145, 125, 47)', 'rgb(220, 197, 100)', 'rgb(249, 245, 226)'];
-        const themeLogo = function (size) {
-            return (
-                <IoIosBonfire size={size}/>
-            )
-        };
-        const themeTitle = 'g/saraba1st';
         return (
             <div className='frontpage-wrapper'>
-                <Header themeColor={themeColor} themeLogo={themeLogo} themeTitle={themeTitle} view={this.state.view} toggleView={this.toggleView} sort={this.state.sort} toggleSort={this.toggleSort}/>
+                <Header themeColor={this.props.themeColor} themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle} view={this.state.view} toggleView={this.toggleView} sort={this.state.sort} toggleSort={this.toggleSort}/>
                 <div className='main-content-wrapper'>
                     <div className='main-content-wrapper-box'>
                         <div className='posts-wrapper'>
                             <Card />
                             <Card />
                             <Card />
+                            <Card />
+                            <Card />
+                            <Card />
+                            <Card />
+                            <Card />
+                            <Card />
                         </div>
                         <div className='infos-wrapper'>
-                            <Info themeColor={themeColor} themeLogo={themeLogo} themeTitle={themeTitle}/>
+                            <Info themeColor={this.props.themeColor} themeLogo={this.props.themeLogo} themeTitle={this.props.themeTitle}/>
                         </div>
                     </div>
                 </div>
